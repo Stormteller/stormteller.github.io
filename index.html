@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TODO List</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	
+</head>
+<body>
+	<section id="toDoApp">
+		<input type="text" id="createTask" placeholder="What needs to be done?" data-keypress-action="addTask" autofocus>
+		<input type="checkbox" id="allChecked" data-click-action="allChecked">
+		<ul id="toDoList"></ul>
+		<input type="button" id="clearChecked" value="✖" data-click-action="clearChecked">
+	</section>
+	<script src="main.js"></script>
+	<script>
+		App.init();
+	</script>
+</body>
+</html>
