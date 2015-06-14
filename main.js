@@ -39,7 +39,6 @@ var ESC_KEY = 27;
 	};
 
 	App.onDblClickFunc = function(e){
-		console.log(3);
 		if(e.target.hasAttribute('data-dblclick-action')){
 			switch(e.target.getAttribute('data-dblclick-action')){
 				case 'editTask': this.editTask(e); break;
@@ -72,7 +71,7 @@ var ESC_KEY = 27;
 		if(e.target.checked) {
 			var flagCheck = true;
 			$(e.target).next().addClass('checkedTask');
-			$('ul#toDoList li').each(function(){
+			$('ul#toDoList li').each(function(){			//Если все отмечены выполенными, то поставить галочку в чекбоксе allChecked
 				if(!$(this).children('[type=checkbox]').prop('checked')) flagCheck = false; 
 			});
 			if(flagCheck) {
@@ -106,13 +105,12 @@ var ESC_KEY = 27;
 			$newTask = $('<li id ="' + newTaskId + '">'),
 			taskData = $('#' + e.target.id).val();
 
-		if(taskData){
+		if(taskData){			//Игнорировать пустое поле
 
 			$newTask.append('<input type="checkbox" class="toggle" data-click-action="toggleTask">');
 			$newTask.append('<label class="task" data-dblclick-action="editTask" data-keypress-action="changeTask">' + taskData + '</label>');
 			$newTask.append('<input type="text" class="task edit" data-dblclick-action="editTask" data-task-id="' + newTaskId + '" data-keypress-action="changeTask" value="' + taskData + '"">');
 			$newTask.append('<input type="button" value="✗" class="remove" data-click-action="removeTask" data-task-id="' + newTaskId + '">');
-			//$newTask.append('<button class="remove" data-click-action="removeTask" data-task-id="' + newTaskId + '"></button>');
 
 			$toDoList.append($newTask);
 
@@ -135,18 +133,21 @@ var ESC_KEY = 27;
 	};
 
 	App.editTask = function(e){
-		buffer = $(e.target).text();
-		$(e.target).hide();
-		$(e.target).next().show().val(buffer).focus();
+		if(!$(e.target).hasClass('checkedTask')){			//Блокируем возможность редактирования, если задание отмечено выполненым
+			buffer = $(e.target).text();
+			$(e.target).hide();
+			$(e.target).next().show().val(buffer).focus();
+		}
 	};
 
 	App.changeTask = function(e){
 		if(!$(e.target).val()) 
 			$('#' + $(e.target).attr('data-task-id')).remove();	         //Если оставили поле задания пустым то удаляем задание
-		else 
+		else {
 			buffer	= $(e.target).val();	
-		$(e.target).hide();
-		$(e.target).prev().text(buffer).show();
+			$(e.target).hide();
+			$(e.target).prev().text(buffer).show();
+		}
 	};
 
 	App.notChangeTask = function(e){
